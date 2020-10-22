@@ -1,0 +1,158 @@
+a{
+    text-decoration:none;
+}
+.ztree li span.button.switch{
+    width:17px;height:17px;border-radius:50%;
+}
+.ztree li span.button {
+    width:0px;
+}
+.ztree li a.curSelectedNode{
+    background:none;
+    border:none;
+}
+
+.ztree li span.button.roots_close{
+     width:17px;height:17px;
+     background:url(../../images/ADD.png) center no-repeat;
+}
+.ztree li span.button.roots_open{
+     width:17px;height:17px;
+     background:url(../../images/PLUS.png) center no-repeat;
+}
+.ztree li span.button.center_open{
+     width:17px;height:17px;
+     background:url(../../images/PLUS.png) center no-repeat;
+}
+.ztree li span.button.center_close{
+     width:17px;height:17px;
+     background:url(../../images/ADD.png) center no-repeat;
+}
+.ztree li span.button.root_close{
+     width:17px;height:17px;
+     background:url(../../images/ADD.png) center no-repeat;
+}
+.ztree li span.button.root_open {
+     width:17px;height:17px;
+     background:url(../../images/PLUS.png) center no-repeat;
+}
+.ztree li span.button.bottom_close{
+     width:17px;height:17px;
+     background:url(../../images/ADD.png) center no-repeat;
+}
+.ztree li span.button.bottom_open {
+     width:17px;height:17px;
+     background:url(../../images/PLUS.png) center no-repeat;
+}
+.ztree li span.button.ico_docu{
+    width:17px;height:17px;border-radius:50%;
+    background:url(../../images/kong.png) center no-repeat;
+} 
+.ztree li .curSelectedNode span.button.ico_docu{
+    width:17px;height:17px;
+    background:url(../../images/select.png) center no-repeat;
+}
+.ztree li a:hover{
+    text-decoration: none
+}
+.ztree li{
+    margin-top:10px;
+}
+/*自定义报表配置*/
+#treeItcomp li ul.line{
+    background: none !important;
+}
+#treeItcomp li span.button.bottom_docu{
+    display:none;
+}
+#treeItcomp li span.button.center_docu{
+    display:none;
+}
+#treeItcomp li span.button.ico_close{
+    width:16px;margin:0 5px;
+    background:url(../../images/checkbox_false.png) no-repeat center;
+}
+#treeItcomp li span.button.ico_open{
+    width:16px;margin:0 5px;
+    background:url(../../images/checkbox_false.png) no-repeat center;
+}
+#treeItcomp li span.button.ico_docu{
+     width:16px;margin:0 5px;
+    background:url(../../images/checkbox_false.png) no-repeat center;
+}
+#treeItcomp li .curSelectedNode span.button.ico_docu{
+     background:url(../../images/form_checkbox_true.png) no-repeat center;
+}
+#treeItcomp li .curSelectedNode span.button.ico_open{
+     background:url(../../images/form_checkbox_true.png) no-repeat center;
+}
+#treeItcomp li .curSelectedNode span.button.ico_close{
+     background:url(../../images/form_checkbox_true.png) no-repeat center;
+}
+/* .ztree li span.button.chk.checkbox_false_full{
+	background:url(../../images/checkbox_false.png) no-repeat center;
+}
+.ztree li span.button.chk.checkbox_false_full_focus{
+	background:url(../../images/checkbox_false.png) no-repeat center;
+}
+.ztree li span.button.chk.checkbox_true_full{
+	background:url(../../images/form_checkbox_true.png) no-repeat center;
+}
+.ztree li span.button.chk.checkbox_true_full_focus{
+	background:url(../../images/form_checkbox_true.png) no-repeat center;
+} */
+/* .ztree li span.button.chk.checkbox_true_part{
+	background:url(../../images/form_checkbox_true.png) no-repeat center;
+}
+.ztree li span.button.chk.checkbox_true_part_focus{
+	background:url(../../images/form_checkbox_true.png) no-repeat center;
+} */
+.treeBtn{
+    position: absolute;bottom:10px;
+}
+.menuContent{
+    height:250px;border:1px solid #e2e2e2;background: #fff
+}
+.menuContent #treeItcomp{
+    border:none;
+}
+.treeBtn .btn{
+    padding: 6px 40px;
+}
+.reset{
+    background: #F95C57;color:#fff;margin-left:30px;
+}
+.reset:hover,.reset:focus,.reset:active{
+    color:#fff;outline: none !important;
+}
+/*角色管理*/
+.ztree li span.button.chk{
+	width:17px;height:17px;background-position:0 0 !important;
+}
+
+#xMenuGroup li span.button.ico_docu{
+     display:none
+} 
+li span.button.chk.checkbox_false_full{
+	background:url(../../images/checkbox2.png) center no-repeat;
+}
+li span.button.chk.checkbox_false_full_focus{
+	background:url(../../images/checkbox2.png) center no-repeat;
+}
+li span.button.chk.checkbox_true_full{
+	background:url(../../images/checkbox3.png) center no-repeat;
+}
+li span.button.chk.checkbox_true_full_focus{
+	background:url(../../images/checkbox3.png) center no-repeat;
+}
+li span.button.chk.checkbox_true_part{
+	background:url(../../images/checkbox1.png) center no-repeat;
+}
+li span.button.chk.checkbox_true_part_focus{
+	background:url(../../images/checkbox1.png) center no-repeat;
+}
+/* .ztree li span.button.ico_docu{
+	width: 17px;
+    height: 17px;
+    background: url(../../images/select.png) center no-repeat;
+} */

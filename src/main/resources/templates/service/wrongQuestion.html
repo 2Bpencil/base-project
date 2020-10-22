@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      th:replace="layout/layout">
+
+<body >
+
+<div class="row wrapper border-bottom white-bg page-heading" th:fragment="pageTitle">
+    <input id="studentId" th:value="${student.id}" type="hidden">
+    <div class="col-sm-4">
+        <h2 ><span th:text="${student.name}"></span>的错题</h2>
+    </div>
+    <div class="col-sm-8">
+        <!--页面按钮-->
+        <div class="title-action">
+            <a href="javascript:;" class="btn btn-primary" onclick="uploadWrongQuestion()">新增错题</a>
+            <a href="javascript:;" class="btn btn-primary" onclick="exportWrongQuestion()">批量导出错题</a>
+            <a href="javascript:;" class="btn btn-primary" onclick="reloadTable()">刷新</a>
+            <a href="javascript:;" class="btn btn-primary" onclick="backPrevious()" >返回</a>
+        </div>
+    </div>
+</div>
+<!--页面内容-->
+<div class="wrapper wrapper-content animated fadeInRight" th:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>错题列表</h5>
+                    <div class="ibox-tools">
+                        <input class="Wdate " name="start_time" id="start_time" readonly="readonly" type="text"  onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'end_time\')}'})" >&nbsp;&nbsp;至&nbsp;
+                        <input class="Wdate " name="end_time" id="end_time" readonly="readonly" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'start_time\')}'})"  >
+                        <button class="btn btn-primary btn-xs" type="button"  onclick="reloadTable()"><i class="fa fa-search"></i> </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example"  id="wrongQuestion_table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>错题信息</th>
+                                <th>图片</th>
+                                <th>级别</th>
+                                <th>知识点</th>
+                                <th>时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                                <th>ID</th>
+                                <th>错题信息</th>
+                                <th>图片</th>
+                                <th>级别</th>
+                                <th>知识点</th>
+                                <th>时间</th>
+                                <th>操作</th>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div  th:fragment="jsDiv">
+    <script th:src="@{/js/service/wrongQuestion.js}"></script>
+    <script th:src="@{/js/plugins/ztree/js/fuzzysearch.js}"></script>
+</div>
+<div  th:fragment="modal">
+    <form th:action="@{/wrongQuestion/downloadWrongQuestion}" method="GET" style="display: none" id="downloadWrongQuestionForm">
+        <input type="text" id="download_id" name="id">
+    </form>
+
+    <div class="modal inmodal" id="wrongQuestionModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"  onclick="clearWrongForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-file-excel-o modal-icon"></i>
+                    <h4 class="modal-title">错题表单</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="wrongQuestionForm" >
+                        <input type="hidden" id="form_student_id" name="studentId">
+                        <div class="form-group">
+                            <label>错题题目</label>
+                            <label><button class="btn btn-success btn-xs" type="button" onclick="ocrUpload()"><i class="fa fa-upload"></i>&nbsp;&nbsp;<span class="bold">错题图片识别</span></button></label>
+                            <textarea id="form_name" name="name" rows="8" placeholder="错题题目" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>知识点名称</label>
+                            <input type="text" id="form_knowledge_name" readonly="readonly" onclick="knowledgeShow('knowledge_tree_div');" placeholder="请选择知识点" class="form-control" name="knowledge_name">
+                            <input type="hidden" id="form_code"  placeholder="" class="form-control" name="code">
+                        </div>
+                        <div class="form-group" id="knowledge_tree_div" style="display: none">
+                            <div style="height: 300px;overflow:scroll;" class="hr-line-dashed">
+                                <input type="text" id="search_tree"  placeholder="输入要查找的知识点名称" style="color: #5367ce" class="form-control" name="tree_name">
+                                <ul id="knowledge_tree" class="ztree"></ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>错题级别</label>
+                            <select id="form_level"  class="form-control" name="level">
+                                <option value="">--请选择错题级别--</option>
+                                <option value="0">简单</option>
+                                <option value="1">普通</option>
+                                <option value="2">复杂</option>
+                            </select>
+
+                        </div>
+                        <div class="form-group"><label>上传图片</label> <input type="file" id="form_file"  placeholder="" class="form-control" name="file"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearWrongForm();">关闭</button>
+                            <button type="submit" class="btn btn-primary" >保存</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="exportModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"  onclick="clearExportForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-file-excel-o modal-icon"></i>
+                    <h4 class="modal-title">导出表单</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="exportForm" th:action="@{/wrongQuestion/exportStudentWrongQuestion}" method="GET">
+                        <input type="hidden" id="export_form_student_id" name="studentId">
+                        <div class="form-group">
+                            <label>知识点名称</label>
+                            <input type="hidden" id="export_form_code"  placeholder="" class="form-control" name="code">
+                            <input type="text" id="export_form_knowledge_name" readonly="readonly" onclick="knowledgeShow('export_knowledge_tree_div');" placeholder="请选择知识点" class="form-control" name="knowledge_name">
+                        </div>
+                        <div class="form-group" id="export_knowledge_tree_div" style="display: none">
+                            <div style="height: 300px;overflow:scroll;" class="hr-line-dashed">
+                                <input type="text" id="export_search_tree"  placeholder="输入要查找的知识点名称" style="color: #5367ce" class="form-control" name="tree_name">
+                                <ul id="export_knowledge_tree" class="ztree"></ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>错题级别</label>
+                            <select id="export_form_level"  class="form-control" name="level">
+                                <option value="">--请选择错题级别--</option>
+                                <option value="0">简单</option>
+                                <option value="1">普通</option>
+                                <option value="2">复杂</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>开始日期</label>
+                            <input class="Wdate form-control"  name="export_start_time" id="export_start_time" readonly="readonly" type="text"  onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'export_end_time\')}'})" >
+                        </div>
+                        <div class="form-group"><label>结束日期</label>
+                            <input class="Wdate form-control"  name="export_end_time" id="export_end_time" readonly="readonly" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'export_start_time\')}'})"  >
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearExportForm();">关闭</button>
+                            <button type="submit" class="btn btn-primary" >导出</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="uploadModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"  onclick="clearUploadForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">错题图片识别</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="uploadForm" >
+                        <div class="form-group">
+                            <label>文字识别类型</label>
+                            <select class="form-control m-b"id="form_ocrType"  name="ocrType">
+                                <option value="0">中文</option>
+                                <option value="1">英文</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>错题图片</label>
+                            <input type="file" id="upload_file"  class="form-control" name="upload_file">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearUploadForm();">关闭</button>
+                            <button type="submit" class="btn btn-primary" >识别</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

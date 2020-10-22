@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <link rel="shortcut icon" th:href="@{/img/icon/homework.png}"><!--设置标签的图片-->
+    <meta content="text/html; charset=utf-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header"  th:content="${_csrf.headerName}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title >INSPINIA</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/font-awesome/css/font-awesome.css}" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link th:href="@{/css/plugins/sweetalert/sweetalert.css}"rel="stylesheet">
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <!--datatables-->
+    <link th:href="@{/css/plugins/dataTables/datatables.min.css}" rel="stylesheet">
+    <!--ztree-->
+    <link th:href="@{/js/plugins/ztree/css/zTreeStyle.css}" rel="stylesheet">
+    <!--treeTable-->
+    <link th:href="@{/js/plugins/treetable/jquery.treetable.css}" rel="stylesheet">
+    <!--下拉选-->
+    <link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/chosen/chosen.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/select2/select2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/iCheck/custom.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css}" rel="stylesheet">
+    <!-- Toastr style -->
+    <link th:href="@{/css/plugins/toastr/toastr.min.css}" rel="stylesheet">
+    <!--富文本编辑-->
+    <link th:href="@{/css/plugins/summernote/summernote.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/summernote/summernote-bs3.css}" rel="stylesheet">
+
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <input  type="hidden" id="curMenu" th:value="${session.curMenu}">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <span >
+                                <img alt="image" class="img-circle" th:src="@{/img/profile_small.jpg}" />
+                            </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
+                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold" >你好,<span sec:authentication="name"></span></strong>
+                                </span> <span class="text-muted text-xs block">user operate<b class="caret"></b></span> </span> </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="javascript:;" data-toggle="modal" data-target="#passwordModal">修改密码</a></li>
+                                <li class="divider"></li>
+                                <li><a href="javascript:;" th:onclick="'javascript:userLogOut()'">Logout</a></li>
+                                <form id="logOutForm" th:action="@{/logout}" method="post" style="display: none"></form>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            IN+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="page-wrapper" class="gray-bg">
+            <!--铃铛 邮件 退出-->
+            <div class="row border-bottom" >
+                <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
+                        </li>
+                        <li>
+                            <a href="javascript:;" th:onclick="'javascript:userLogOut()'">
+                                <i class="fa fa-sign-out"></i> Log out
+                            </a>
+
+                        </li>
+                    </ul>
+
+                </nav>
+            </div >
+            <!--面包屑-->
+            <div class="row wrapper border-bottom white-bg page-heading" th:include="::pageTitle">
+                <div class="col-sm-4">
+                    <h2>This is main title</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="index.html">This is</a>
+                        </li>
+                        <li class="active">
+                            <strong>Breadcrumb</strong>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-sm-8">
+                    <div class="title-action">
+                        <a href="#" class="btn btn-primary">This is action area</a>
+                    </div>
+                </div>
+            </div>
+            <!--页面内容-->
+            <div class="wrapper wrapper-content" th:include="::content">
+                <div class="middle-box text-center animated fadeInRightBig">
+                    <h3 class="font-bold">This is page content</h3>
+                </div>
+            </div>
+            <!--页面底部-->
+            <div class="footer">
+                <div class="pull-right">
+                    10GB of <strong>250GB</strong> Free.
+                </div>
+                <div>
+                    <strong>Copyright</strong> Example Company &copy; 2014-2015
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal-->
+    <div th:include="::modal">
+
+    </div>
+    <!--修改密码表单-->
+    <div class="modal inmodal" id="passwordModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"  onclick="clearForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-lock modal-icon"></i>
+                    <h4 class="modal-title">密码修改</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="passwordForm">
+                        <div class="form-group"><label>原密码</label> <input type="password" id="form_old_password"   placeholder="" class="form-control" name="old_password"></div>
+                        <div class="form-group"><label>修改密码</label> <input type="password" id="form_modify_password"  placeholder="" class="form-control" name="modify_password"></div>
+                        <div class="form-group"><label>重复密码</label> <input type="password" id="form_repeat_password"  placeholder="" class="form-control" name="repeat_password"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearPasswordForm();">关闭</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <!-- Mainly scripts -->
+    <script th:src="@{/js/jquery-2.1.1.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+    <script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+    <!-- Peity -->
+    <script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
+    <script th:src="@{/js/demo/peity-demo.js}"></script>
+
+    <!--datatables-->
+    <script th:src="@{/js/plugins/jeditable/jquery.jeditable.js}"></script>
+    <script th:src="@{/js/plugins/dataTables/datatables.min.js}"></script>
+    <script th:src="@{/js/plugins/dataTables/dataTables.select.min.js}"></script>
+    <!-- Sweet alert -->
+    <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    <!--ztree-->
+    <script th:src="@{/js/plugins/ztree/js/jquery.ztree.core.min.js}"></script>
+    <script th:src="@{/js/plugins/ztree/js/jquery.ztree.exedit.min.js}"></script>
+    <script th:src="@{/js/plugins/ztree/js/jquery.ztree.excheck.js}"></script>
+    <script th:src="@{/js/plugins/ztree/js/jquery.ztree.exhide.js}"></script>
+    <!-- iCheck -->
+    <script th:src="@{/js/plugins/iCheck/icheck.min.js}" ></script>
+    <!-- Chosen -->
+    <script th:src="@{/js/plugins/chosen/chosen.jquery.js}"></script>
+    <!-- Select2 -->
+    <script th:src="@{/js/plugins/select2/select2.full.min.js}"></script>
+
+    <!--My97DatePicker-->
+    <script th:src="@{/js/plugins/My97DatePicker/WdatePicker.js}" ></script>
+    <!--validate-->
+    <script th:src="@{/js/plugins/validate/jquery.validate.min.js}" ></script>
+    <!-- Custom and plugin javascript -->
+    <script th:src="@{/js/common.js}"></script>
+    <script th:src="@{/js/inspinia.js}"></script>
+    <script th:src="@{/js/plugins/pace/pace.min.js}"></script>
+    <!-- Toastr script -->
+    <script th:src="@{/js/plugins/toastr/toastr.min.js}"></script>
+    <!--getScheme()获取协议，getServerName()获取服务器名，getServerPort()服务器端口，getContextPath() APP根路径-->
+    <a th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} "
+       id="contextPath" style="display: none"></a>
+    <script>
+        /**
+         * 注销
+         */
+        function userLogOut() {
+            $('#logOutForm').submit();
+        }
+        /*获取应用的根目录，我的绝对路径是*/
+        var contextPath = $('#contextPath').attr('href');
+    </script>
+    <div th:include="::jsDiv">
+
+    </div>
+
+</body>
+</html>

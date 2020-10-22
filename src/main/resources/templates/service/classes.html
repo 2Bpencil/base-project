@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      th:replace="layout/layout">
+
+
+<body>
+<div class="row wrapper border-bottom white-bg page-heading" th:fragment="pageTitle">
+    <div class="col-sm-4">
+        <h2>班级管理</h2>
+    </div>
+    <div class="col-sm-8">
+        <!--页面按钮-->
+        <div class="title-action">
+            <a href="#" data-sec-authorize="hasRole('ROLE_ADMIN')" class="btn btn-success" onclick="clearPid()">清空选中</a>
+            <a href="#" data-sec-authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" onclick="addClasses()">新增</a>
+            <a href="#" data-sec-authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" onclick="editClasses()" >编辑</a>
+            <a href="#" data-sec-authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" onclick="deleteClasses()">删除</a>
+            <a href="#" data-sec-authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" onclick="knowledgeSet()">知识配置</a>
+            <a href="#" class="btn btn-primary" onclick="jQuery('#treeTable').treetable('expandAll'); return false;">展开</a>
+            <a href="#" class="btn btn-primary" onclick="jQuery('#treeTable').treetable('collapseAll'); return false;">关闭</a>
+        </div>
+    </div>
+</div>
+<!--页面内容-->
+<div class="wrapper wrapper-content animated fadeInRight" th:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>菜单列表</h5>
+                </div>
+                <div class="ibox-content">
+                    <table id="treeTable"  class="ui-jqgrid-htable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div  th:fragment="jsDiv">
+    <script th:src="@{/js/plugins/treetable/jquery.treetable.js}"></script>
+    <script th:src="@{/js/service/classes.js}"></script>
+
+</div>
+<div  th:fragment="modal">
+    <div class="modal inmodal" id="classesModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"  onclick="clearForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-users modal-icon"></i>
+                    <h4 class="modal-title">班级信息表单</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="classesForm">
+                        <input type="hidden" id="form_id" name="id">
+                        <input type="hidden" id="form_pid" name="pid">
+                        <div class="form-group"><label>上级信息</label> <input type="text" id="form_parent" disabled="disabled"  placeholder="" class="form-control" name="parent"></div>
+                        <div class="form-group"><label>班级名称</label> <input type="text" id="form_name"  placeholder="请填写班级名称" class="form-control" name="name"></div>
+                        <div class="form-group"><label>排序</label> <input type="text" id="form_sort"  placeholder="请填写正整数" class="form-control" name="sort"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearForm();">关闭</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="knowledgeModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="clearForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-book modal-icon"></i>
+                    <h4 class="modal-title">知识配置</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="ztreeForm">
+                        <div class="form-group"><label>菜单树</label><ul id="knowledgeGroup" class="ztree"></ul> </div>
+
+                        <div class="form-group"><label></label>  <a onclick="checkAll('y')" class="selBtn"> <input type="checkbox" id="check1"> 全选  </a><a onclick="checkAll('n')" class="selBtn"> <input type="checkbox" id="check2"> 取消全选 </a></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearForm();">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="saveKnowledgeSet();">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

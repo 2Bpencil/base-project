@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      th:replace="layout/layout">
+
+
+<body >
+<div class="row wrapper border-bottom white-bg page-heading" th:fragment="pageTitle">
+    <div class="col-sm-4">
+        <h2>学生管理</h2>
+    </div>
+    <div class="col-sm-8">
+        <!--页面按钮-->
+        <div class="title-action">
+
+        </div>
+    </div>
+</div>
+<!--页面内容-->
+<div class="wrapper wrapper-content animated fadeInRight" th:fragment="content">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>班级</h5>
+                    <div class="ibox-tools">
+                        <button class="btn btn-primary btn-xs" type="button"  onclick="exportWrongQuestion()">导出错题 </button>
+                        <button class="btn btn-primary btn-xs" type="button"  onclick="analysisOfClass()"><i class="fa fa-bar-chart-o"></i>统计 </button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <ul id="classesGroup" class="ztree"></ul>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5 id="className">学生列表</h5>
+                    <div class="ibox-tools">
+                        <!--操作按钮-->
+                        <a href="#" class="btn btn-primary" data-toggle="modal" onclick="addStudent()">新增学生</a>
+                        <a href="#" class="btn btn-primary" onclick="reloadTable()">刷新</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example"  id="student_table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>姓名</th>
+                                <th>年龄</th>
+                                <th>性别</th>
+                                <th>联系方式</th>
+                                <th>入学时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <th>ID</th>
+                            <th>姓名</th>
+                            <th>年龄</th>
+                            <th>性别</th>
+                            <th>联系方式</th>
+                            <th>入学时间</th>
+                            <th>操作</th>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div  th:fragment="jsDiv">
+    <script th:src="@{/js/service/student.js}"></script>
+    <script th:src="@{/js/plugins/upload/ajaxfileupload.js}"></script>
+    <script th:src="@{/js/plugins/ztree/js/fuzzysearch.js}"></script>
+
+</div>
+<div  th:fragment="modal">
+    <div class="modal inmodal" id="studentModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"  onclick="clearForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-user modal-icon"></i>
+                    <h4 class="modal-title">学生表单</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="studentForm">
+                        <input type="hidden" id="form_id" name="id">
+                        <input type="hidden" id="form_classesId" name="classesId">
+                        <div class="form-group"><label>姓名</label> <input type="text" id="form_name"  placeholder="" class="form-control" name="name"></div>
+                        <div class="form-group"><label>年龄</label> <input type="text" id="form_age"  placeholder="" class="form-control" name="age"></div>
+                        <div class="form-group"><label>性别</label>
+                            <select class="form-control m-b"id="form_sex"  name="sex">
+                                <option value="">请选择性别</option>
+                                <option value="0">女</option>
+                                <option value="1">男</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>联系方式</label> <input type="text" id="form_phone"  placeholder="" class="form-control" name="phone"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearForm();">关闭</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--导出错题-->
+    <div class="modal inmodal" id="exportModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"  onclick="clearExportForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-file-excel-o modal-icon"></i>
+                    <h4 class="modal-title">导出表单</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="exportForm" th:action="@{/wrongQuestion/exportClassWrongQuestion}" method="GET">
+                        <input type="hidden" id="export_form_type" name="type" value="">
+                        <input type="hidden" id="export_form_class_id" name="classId" value="">
+                        <div class="form-group">
+                            <label>知识点代码</label>
+                            <input type="hidden" id="export_form_code"  placeholder="" class="form-control" name="code">
+                            <input type="text" id="export_form_knowledge_name" readonly="readonly" onclick="knowledgeShow('export_knowledge_tree_div');" placeholder="请选择知识点" class="form-control" name="knowledge_name">
+                        </div>
+                        <div class="form-group" id="export_knowledge_tree_div" style="display: none">
+                            <div style="height: 300px;overflow:scroll;" class="hr-line-dashed">
+                                <input type="text" id="export_search_tree"  placeholder="输入要查找的知识点名称" style="color: #5367ce" class="form-control" name="tree_name">
+                                <ul id="export_knowledge_tree" class="ztree"></ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>错题级别</label>
+                            <select id="export_form_level"  class="form-control" name="level">
+                                <option value="">--请选择错题级别--</option>
+                                <option value="0">简单</option>
+                                <option value="1">普通</option>
+                                <option value="2">复杂</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>开始日期</label>
+                            <input class="Wdate form-control"  name="export_start_time" id="export_start_time" readonly="readonly" type="text"  onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'export_end_time\')}'})" >
+                        </div>
+                        <div class="form-group"><label>结束日期</label>
+                            <input class="Wdate form-control"  name="export_end_time" id="export_end_time" readonly="readonly" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'export_start_time\')}'})"  >
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearExportForm();">关闭</button>
+                            <button type="submit" class="btn btn-primary" >导出</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

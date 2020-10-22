@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      th:replace="layout/layout">
+<body >
+<div class="row wrapper border-bottom white-bg page-heading" th:fragment="pageTitle">
+    <input id="studentId" th:value="${student.id}" type="hidden">
+    <div class="col-sm-4">
+        <h2 ><span th:text="${student.name}"></span>的错题分析</h2>
+    </div>
+    <div class="col-sm-8">
+        <!--页面按钮-->
+        <div class="title-action">
+            <a href="#" class="btn btn-primary" onclick="backPrevious()" >返回</a>
+        </div>
+    </div>
+</div>
+<!--页面内容-->
+<div class="wrapper wrapper-content animated fadeInRight" th:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5> 知识点错误次数统计</h5>
+                    <div class="ibox-tools">
+                        <input class="Wdate " name="start_time" id="start_time" readonly="readonly" type="text"  onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd',maxDate:'#F{$dp.$D(\'end_time\')}'})" >&nbsp;&nbsp;至&nbsp;
+                        <input class="Wdate " name="end_time" id="end_time" readonly="readonly" type="text" onClick="WdatePicker({el:this,dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'start_time\')}'})"  >
+                        <button class="btn btn-primary btn-xs" type="button"  onclick="knowledgeWrongNum()"><i class="fa fa-search"></i> </button>
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content"  id="knowledgeWrongNum" style="height:325px ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>知识点频次分析</h5>
+                    <div class="ibox-tools">
+                        <select id="knowledgeSelect" style="width:150px;" onchange="changeKnowledgeSelect();">
+                        </select>
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content"  id="knowledgeFrequency" style="height:325px ">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>重点知识统计</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content"  id="keyKnowledge" style="height:325px ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div  th:fragment="jsDiv">
+    <script th:src="@{/js/service/analysisOfMistakenQuestion.js}"></script>
+    <script th:src="@{/js/plugins/echart/echarts.js}"></script>
+
+</div>
+<div  th:fragment="modal">
+
+</div>
+
+</body>
+</html>

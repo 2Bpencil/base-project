@@ -1,0 +1,81 @@
+#访问端口
+server:
+  port: 9527
+  tomcat:
+    uri-encoding: UTF-8
+public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMSs169+eZmgH0QzNvNvb/6vwQqUsBACimLmeeW1aP192/3FcuNHPuKkm4esrMtJhjQdRDqI4PZTTMzalovwKFcCAwEAAQ==
+jwt:
+  secret: secret
+  expiration: 7200000
+  token: Authorization
+spring:
+  #***************************************数据源配置***************************************
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    platform: mysql
+    url: jdbc:mysql://localhost:3306/base-project?serverTimezone=GMT&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: IRFE739wAaH1GLj+UN+e/gHpW0WHTCe6dIPjn3DKXdWr6XyC+TqqWhqyvdLjdtnXaxj1pul4bU3MKi+bAQIiVg==
+    druid:
+      filter:
+        config:
+          enabled: true
+      connection-properties: config.decrypt=true;config.decrypt.key=${public-key}
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT1FROMDUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    filters: stat,wall,log4j
+    logSlowSql: true
+
+  #***************************************数据持久化***************************************
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  #******************************************视图配置*****************************************
+  thymeleaf:
+    #开启模板缓存（默认值：true）
+    cache: false
+    #Check that the template exists before rendering it.
+    check-template: true
+    #检查模板位置是否正确(默认值:true)
+    check-template-location: true
+    servlet:
+      #Content-Type的值（默认值：text/html）
+      content-type: text/html
+    #开启MVC Thymeleaf视图解析(默认值：true)
+    enabled: true
+    #模板编码
+    encoding: utf-8
+    #要被排除在解析之外的视图名称列表，用逗号分隔
+    excluded-view-names:
+    #要运用于模板之上的模板模式。另见StandardTemplate-ModeHandlers(默认值：HTML5)
+    mode: HTML5
+    #在构建URL时添加到视图名称前的前缀（默认值：classpath:/templates/）
+    prefix: classpath:/templates/
+    #在构建URL时添加到视图名称后的后缀（默认值：.html）
+    suffix: .html
+
+  #******************************************日志配置*****************************************
+  logging:
+    file: project.log
+    level.root: info
+
+
+config:
+  operateFolder: F:/operate
+
+
+
+
+
+

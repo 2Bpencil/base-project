@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      th:replace="layout/layout">
+
+
+<body >
+<div class="row wrapper border-bottom white-bg page-heading" th:fragment="pageTitle">
+    <div class="col-sm-4">
+
+        <h2>试卷管理</h2>
+    </div>
+    <div class="col-sm-8">
+        <!--页面按钮-->
+        <div class="title-action">
+            <a href="#" class="btn btn-primary" data-toggle="modal" onclick="addTestPaper()">新增试卷 </a>
+            <a href="#" class="btn btn-primary" onclick="reloadTable()">刷新</a>
+        </div>
+    </div>
+</div>
+<!--页面内容-->
+<div class="wrapper wrapper-content animated fadeInRight" th:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5 id="className">试卷列表</h5>
+                    <div class="ibox-tools">
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example"  id="testPaper_table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>试卷名称</th>
+                                <th>科目</th>
+                                <th>时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <th>ID</th>
+                            <th>试卷名称</th>
+                            <th>科目</th>
+                            <th>时间</th>
+                            <th>操作</th>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div  th:fragment="jsDiv">
+    <script th:src="@{/js/service/testPaper.js}"></script>
+
+</div>
+<div  th:fragment="modal">
+    <form th:action="@{/testPaper/downloadTestPaper}" method="GET" style="display: none" id="downloadPaperForm">
+        <input type="text" id="download_id" name="id">
+    </form>
+    <div class="modal inmodal" id="testPaperModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"  onclick="clearTestPaperForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-files-o modal-icon"></i>
+                    <h4 class="modal-title">试卷表单</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="testPaperForm">
+                        <div class="form-group">
+                            <label>试卷名称</label> <input type="text" id="testPaperForm_name"  placeholder="" class="form-control" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label>试卷科目</label>
+                            <select class="form-control " id="form_type"  name="form_type">
+                                <option value="">--请选择科目--</option>
+                                <option th:value="0">语文</option>
+                                <option th:value="1">数学</option>
+                                <option th:value="2">英语</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>试卷上传</label> <input type="file" id="testPaperForm_file"  placeholder="" class="form-control" name="file">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearTestPaperForm();">关闭</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

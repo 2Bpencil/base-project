@@ -1,0 +1,118 @@
+table.treetable span.indenter {
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -webkit-user-select: none;
+  width: 19px;
+  margin-right:10px
+/*   background: url(../../images/1.png) no-repeat; */
+}
+table.treetable {
+  border-collapse: collapse;
+  font-size: 18px;
+  line-height: 1;
+  width: 100%;
+  font-family: "Microsoft YaHei";
+  font-size: 14px;
+  table-layout: fixed;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+table.treetable thead tr td {
+  font-weight: normal;
+  padding: 0px 10px;
+  height: 30px;
+  text-align: left;
+  font-weight: 700;
+  background: #f2f2f2;
+}
+
+table.treetable tbody tr td {
+  cursor: default;
+  padding: 0px 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+table.treetable tbody tr td.td_left {
+  text-align:left;
+}
+table.treetable span {
+  background-position: center left;
+  background-repeat: no-repeat;
+  /* line-height: 20px; */
+}
+table.treetable span.parent a,table.treetable span.children a{
+	color:rgba(0,0,0,0.75)
+}
+
+table.treetable tr.collapsed span.indenter a {
+  background: url(../../../img/treetable/zhankai.png) no-repeat;
+  /* background-position: -23px 2px; */
+  display:inline-block;
+  width: 15px;
+  height: 15px;
+}
+
+table.treetable tr.expanded span.indenter a {
+  background: url(../../../img/treetable/guanbi.png) no-repeat;
+ /* background-position: 0px 2px; */
+  display:inline-block;
+  width: 15px;
+  height: 15px;
+}
+
+table.treetable tr{
+	height: 43px;
+	border-bottom:1px solid #e2e2e2
+}
+/* table.treetable tbody tr:hover{
+	background:#DDECF5;
+} */
+table.treetable tr .altrow{background-color: red;}
+table.treetable tbody tr.selected {
+  background:#FAFAFA;
+}
+
+table.treetable tr.collapsed.selected span.indenter a {
+  background: url(../../../img/treetable/zhankai.png) no-repeat;
+  /* background-position: -23px 2px; */
+  display:inline-block;
+  width: 15px;
+  height: 15px;
+}
+
+table.treetable tr.expanded.selected span.indenter a {
+  background: url(../../../img/treetable/guanbi.png) no-repeat;
+  /* background-position: 0px 2px; */
+  display:inline-block;
+  width: 15px;
+  height: 15px;
+}
+
+table.treetable tr.accept {
+  background-color: #a3bce4;
+  color: #fff
+}
+
+table.treetable tr.collapsed.accept td span.indenter a {
+  background: url(../../../img/treetable/guanbi.png) no-repeat;
+  /* background-position: 0px 2px; */
+  display:inline-block;
+  width: 15px;
+  height: 15px;
+}
+
+table.treetable tr.expanded.accept td span.indenter a {
+  background: url(../../../img/treetable/guanbi.png) no-repeat;
+  /* background-position: 0px 2px; */
+  display:inline-block;
+  width: 15px;
+  height: 15px;
+}

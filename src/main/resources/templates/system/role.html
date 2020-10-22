@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      th:replace="layout/layout">
+<body >
+<div class="row wrapper border-bottom white-bg page-heading" th:fragment="pageTitle">
+    <div class="col-sm-4">
+
+        <h2>角色管理</h2>
+    </div>
+    <div class="col-sm-8">
+        <!--页面按钮-->
+        <div class="title-action">
+            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#roleModal">新增角色</a>
+            <a href="#" class="btn btn-primary" onclick="reloadTable()">刷新</a>
+        </div>
+    </div>
+</div>
+<!--页面内容-->
+<div class="wrapper wrapper-content animated fadeInRight" th:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>角色列表</h5>
+                    <div class="ibox-tools">
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example"  id="role_table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>角色代码</th>
+                                <th>角色名称</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <th>ID</th>
+                            <th>角色代码</th>
+                            <th>角色名称</th>
+                            <th>操作</th>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div  th:fragment="jsDiv">
+    <script th:src="@{/js/system/role.js}"></script>
+
+</div>
+<div  th:fragment="modal">
+    <div class="modal inmodal" id="roleModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"  onclick="clearForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-users modal-icon"></i>
+                    <h4 class="modal-title">角色表单</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="roleForm">
+                        <input type="hidden" id="form_id" name="id">
+                        <div class="form-group"><label>角色代码</label> <input type="text" id="form_authority"  placeholder="填写英文角色代码" class="form-control" name="authority"></div>
+                        <div class="form-group"><label>角色名称</label> <input type="text" id="form_name"  placeholder="请填写中文角色名称" class="form-control" name="name"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearForm();">关闭</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="menuModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="clearForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-bars modal-icon"></i>
+                    <h4 class="modal-title">菜单分配</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="ztreeForm">
+                        <div class="form-group"><label>菜单树</label><ul id="MenuGroup" class="ztree"></ul> </div>
+
+                        <div class="form-group"><label></label>  <a onclick="checkAll('y')" class="selBtn"> <input type="checkbox" id="check1"> 全选  </a><a onclick="checkAll('n')" class="selBtn"> <input type="checkbox" id="check2"> 取消全选 </a></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearForm();">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="saveRoleAndMenu();">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

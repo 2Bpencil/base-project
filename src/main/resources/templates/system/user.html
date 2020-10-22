@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      th:replace="layout/layout">
+
+<body>
+<div class="row wrapper border-bottom white-bg page-heading" th:fragment="pageTitle">
+    <div class="col-sm-4">
+
+        <h2>用户管理</h2>
+    </div>
+    <div class="col-sm-8">
+        <!--页面按钮-->
+        <div class="title-action">
+            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#userModal">新增用户</a>
+            <a href="#" class="btn btn-primary" onclick="reloadTable()">刷新</a>
+        </div>
+    </div>
+</div>
+<!--页面内容-->
+<div class="wrapper wrapper-content animated fadeInRight" th:fragment="content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>用户列表</h5>
+                    <div class="ibox-tools">
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example"  id="user_table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>用户名</th>
+                                <th>真实姓名</th>
+                                <th>电话</th>
+                                <th>性别</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                                <th>ID</th>
+                                <th>用户名</th>
+                                <th>真实姓名</th>
+                                <th>电话</th>
+                                <th>性别</th>
+                                <th>操作</th>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div  th:fragment="jsDiv">
+    <script th:src="@{/js/system/user.js}"></script>
+</div>
+<div  th:fragment="modal">
+    <div class="modal inmodal" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"  onclick="clearForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-user modal-icon"></i>
+                    <h4 class="modal-title">用户表单</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="userForm">
+                        <input type="hidden" id="form_id" name="id">
+                        <div class="form-group"><label>用户名</label> <input type="text" id="form_username"  placeholder="请填写用户名" class="form-control" name="username"></div>
+                        <div class="form-group"><label>真实姓名</label> <input type="text" id="form_realName"  placeholder="请填写用户真是姓名" class="form-control" name="realName"></div>
+                        <div class="form-group"><label>联系电话</label> <input type="text" id="form_phone"  placeholder="请填写联系电话" class="form-control" name="phone"></div>
+                        <div class="form-group"><label>性别</label>
+                            <select class="form-control m-b"id="form_sex"  name="sex">
+                                <option value="">请选择性别</option>
+                                <option value="0">女</option>
+                                <option value="1">男</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearForm();">关闭</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="roleModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="clearForm();"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-bars modal-icon"></i>
+                    <h4 class="modal-title">角色分配</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="ztreeForm">
+                        <div class="form-group"><label>角色树</label><ul id="roleGroup" class="ztree"></ul> </div>
+
+                        <div class="form-group"><label></label>  <a onclick="checkAll('y')" class="selBtn"> <input type="checkbox" id="check1"> 全选  </a><a onclick="checkAll('n')" class="selBtn"> <input type="checkbox" id="check2"> 取消全选 </a></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="clearForm();">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="saveUserAndRole();">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="classModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" ><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <i class="fa fa-bars modal-icon"></i>
+                    <h4 class="modal-title">班级分配</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="form-group"><label>班级树</label><ul id="classGroup" class="ztree"></ul> </div>
+
+                        <div class="form-group"><label></label>  <a onclick="checkClassAll('y')" class="selBtn"> <input type="checkbox" id="check3"> 全选  </a><a onclick="checkClassAll('n')" class="selBtn"> <input type="checkbox" id="check4"> 取消全选 </a></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" data-dismiss="modal" >关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="saveClassSet();">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>
