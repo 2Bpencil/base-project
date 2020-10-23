@@ -9,31 +9,19 @@ $(document).ready(function(){
 
 
 
+
     $(".checkall").click(function () {
         if (this.checked) {
             $(this).attr('checked', 'checked')
             $("input[name='datatablecheckbox']").each(function () {
                 this.checked = true;
             });
-
-
         } else {
             $(this).removeAttr('checked')
             $("input[name='datatablecheckbox']").each(function () {
                 this.checked = false;
             });
         }
-        var ids = '';
-        var checkedBox = $("input[name='datatablecheckbox']:checked");
-        checkedBox.each(function () {
-            if(ids == ''){
-                ids = $(this).val();
-            }else{
-                ids += ',' + $(this).val();
-            }
-        });
-        console.log(ids);
-
     });
 });
 
@@ -232,6 +220,7 @@ function deleteMould(id){
         $.ajax({
             type : "POST",
             data : {id:id},
+
             dataType:"json",
             url : contextPath+"mould/deleteEntity",
             beforeSend : function(xhr) {
@@ -244,12 +233,58 @@ function deleteMould(id){
                 }else{
                     swal("删除失败!", "", "error");
                 }
+
             }
         });
     });
 }
 
+/**
+ * 初始化数据表
+ */
+function initTables() {
 
+    if($('#database_ip').val()==''| $('#database_name').val()=='' || $('#database_username').val()=='' || $('#database_password').val()==''){
+        swal("数据库连接信息不能为空!", "", "error");
+        return;
+    }
+    $.ajax({
+        type : "POST",
+        data : {
+            databaseIp:$('#database_ip').val(),
+            databaseName:$('#database_name').val(),
+            username:$('#database_username').val(),
+            password:$('#database_password').val(),
+        },
+        dataType:"json",
+        url : contextPath+"mould/getTables",
+        beforeSend : function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function(result){
+            console.log(result);
+            var options = '';
+            for (var i = 0;i<result.length;i++){
+                options+='<option value="'+result[i]+'">'+result[i]+'</option>';
+            }
+            $('#table_select').html(options);
+            $("#table_select").select2();
+        }
+    });
+}
+function createCode(){
+    var checkedBox = $("input[name='datatablecheckbox']:checked");
+    var ids = '';
+    checkedBox.each(function () {
+        if(ids == ''){
+            ids = $(this).val();
+        }else{
+            ids += ',' + $(this).val();
+        }
+    });
+    console.log(ids);
+    console.log($('#table_select').val());
+}
 
 
 

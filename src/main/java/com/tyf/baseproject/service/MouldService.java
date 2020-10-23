@@ -73,7 +73,7 @@ public class MouldService extends PageGetter<Mould> {
      * @Date: 2020/10/21 9:51
      */ 
     public String getTables(String databaseIp,String databaseName,String username,String password){
-        String url = "jdbc:mysql://"+databaseIp+":3306/";
+        String url = "jdbc:mysql://"+databaseIp+":3306/?serverTimezone=GMT";
         String driver = "com.mysql.jdbc.Driver";
         Connection conn = null;
         List<String> tableNameList = new ArrayList<String>();
