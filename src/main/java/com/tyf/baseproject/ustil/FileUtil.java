@@ -160,7 +160,50 @@ public class FileUtil {
         }
         return flag;
     }
+    /**
+     * @Description: 创建文件并写入内容
+     * @Param: [filePath, content]
+     * @return: boolean
+     * @Author: tyf
+     * @Date: 2020/10/26 9:43
+     */ 
+    public static boolean writeFileContent(String filePath,String content) throws IOException{
+        boolean flag = false;
+        String fileIn = content+"\r\n";
+        FileOutputStream fos = null;
+        PrintWriter pw = null;
+        try {
+            File file = new File(filePath);//文件路径(包括文件名称)
+            if(!file.exists()){
+                file.createNewFile();
+            }
 
+
+            StringBuffer buffer = new StringBuffer();
+
+
+            buffer.append(fileIn);
+
+            fos = new FileOutputStream(file);
+            pw = new PrintWriter(fos);
+            pw.write(buffer.toString().toCharArray());
+            pw.flush();
+            flag = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            //不要忘记关闭
+            if (pw != null) {
+                pw.close();
+            }
+            if (fos != null) {
+                fos.close();
+            }
+
+        }
+        return flag;
+
+    }
 
 }
     

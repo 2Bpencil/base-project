@@ -71,9 +71,9 @@ spring:
     level.root: info
 
 
-config:
+folder:
   operateFolder: F:/operate
-
+  saveFolder: F:/save
 
 
 

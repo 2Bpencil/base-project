@@ -18,6 +18,8 @@ public class Mould {
     private String name;
     @Column(length = 20)
     private String project;
+    @Column(length = 20)
+    private String suffix;
     @Column
     private String content;
 
@@ -51,5 +53,13 @@ public class Mould {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 }

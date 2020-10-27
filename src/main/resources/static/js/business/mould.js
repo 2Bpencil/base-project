@@ -5,7 +5,7 @@ $(document).ready(function(){
 
     initTable();
     validateData();
-
+    $("#table_select").select2();
 
 
 
@@ -57,6 +57,11 @@ function initTable(){
             },
 
             { "data": "name",
+                render : CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,
+                width: '25%'
+
+            },
+            { "data": "suffix",
                 render : CONSTANT.DATA_TABLES.RENDER.ELLIPSIS,
                 width: '25%'
 
@@ -123,6 +128,9 @@ function validateData(){
             name:{
                 required: true,
             },
+            suffix:{
+                required: true,
+            },
             project:{
                 required: true,
             },
@@ -132,6 +140,9 @@ function validateData(){
         },
         messages : {
             name : {
+                required : "不能为空",
+            },
+            suffix : {
                 required : "不能为空",
             },
             project : {
@@ -190,6 +201,7 @@ function editMould(id){
             $('#form_id').val(result.id);
             $('#form_name').val(result.name);
             $('#form_project').val(result.project);
+            $('#form_suffix').val(result.suffix);
             $('#form_content').val(result.content);
             showModal("mouldModal");
         }
@@ -262,7 +274,6 @@ function initTables() {
             xhr.setRequestHeader(header, token);
         },
         success: function(result){
-            console.log(result);
             var options = '';
             for (var i = 0;i<result.length;i++){
                 options+='<option value="'+result[i]+'">'+result[i]+'</option>';
@@ -282,8 +293,49 @@ function createCode(){
             ids += ',' + $(this).val();
         }
     });
-    console.log(ids);
-    console.log($('#table_select').val());
+    if(ids == ''){
+        swal("请选择要生成的模板!", "", "error");
+        return;
+    }
+
+    var tableNames = '';
+    if($('#table_select').val() == null){
+        swal("请选择要生成的数据表!", "", "error");
+        return;
+    }
+    for (var i = 0; i < $('#table_select').val().length; i++ ){
+        if(tableNames == ''){
+            tableNames = $('#table_select').val()[i];
+        }else{
+            tableNames += ',' + $('#table_select').val()[i];
+        }
+    }
+
+    $.ajax({
+        type : "POST",
+        data : {
+            databaseIp:$('#database_ip').val(),
+            username:$('#database_username').val(),
+            password:$('#database_password').val(),
+            tableNames:tableNames,
+            mouldIds:ids,
+            databaseName:$('#database_name').val(),
+        },
+        dataType:"json",
+        url : contextPath+"mould/createFiles",
+        beforeSend : function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function(result){
+            if(result == 1){
+                swal("生成成功!", "", "success");
+            }else{
+                swal("生成失败!", "", "error");
+            }
+        }
+    });
+
+
 }
 
 

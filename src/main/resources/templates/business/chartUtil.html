@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      th:replace="layout/layout">
+
+<body>
+<div class="row wrapper border-bottom white-bg page-heading" th:fragment="pageTitle">
+    <div class="col-sm-4">
+
+        <h2>图表工具</h2>
+    </div>
+    <div class="col-sm-8">
+        <!--页面按钮-->
+        <div class="title-action">
+
+        </div>
+    </div>
+</div>
+<!--页面内容-->
+<div class="wrapper wrapper-content animated fadeInRight" th:fragment="content">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>统计图</h5>
+                    <div class="ibox-tools">
+                        <a href="#" class="btn btn-primary" >刷新</a>
+                        <a href="#" class="btn btn-primary" onclick="saveAsImage()" >下载</a>
+                        <a id='download_a' style="display: none"></a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg-12" id="dataBarChart" style="height:650px ">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>数据库信息</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="row" style="height:650px ">
+                        <form role="form" id="databaseModalForm">
+                            <div class="form-group"><label>数据库ip</label> <input type="text" id="database_ip"  placeholder="请填写数据库ip" class="form-control" name="database_ip"></div>
+                            <div class="form-group"><label>数据库名称</label> <input type="text" id="database_name"  placeholder="请填写数据库名称" class="form-control" name="database_name"></div>
+                            <div class="form-group"><label>用户名</label> <input type="text" id="database_username"  placeholder="请填写用户名" class="form-control" name="database_username"></div>
+                            <div class="form-group"><label>密码</label> <input type="text" id="database_password"  placeholder="请填写密码" class="form-control" name="database_password"></div>
+                            <button type="button" class="btn btn-primary" onclick="createCode()">生成统计图</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div  th:fragment="modal"></div>
+
+
+<div  th:fragment="jsDiv">
+    <script th:src="@{/js/business/chartUtil.js}"></script>
+    <script th:src="@{/js/plugins/echart/echarts.js}"></script>
+    <script th:src="@{/js/plugins/echart/echarts-gl.min.js}"></script>
+    <script th:src="@{/js/plugins/echart/dark.js}"></script>
+    <script th:src="@{/js/plugins/echart/chalk.js}"></script>
+    <script th:src="@{/js/plugins/echart/macarons.js}"></script>
+    <script th:src="@{/js/plugins/echart/vintage.js}"></script>
+    <script th:src="@{/js/plugins/html2canvas/html2canvas.min.js}"></script>
+    <script th:src="@{/js/plugins/html2canvas/canvas2image.js}"></script>
+</div>
+</body>
+
+</html>

@@ -155,11 +155,23 @@ public class MouldController {
      */
     @RequestMapping(value = "createFiles",method = RequestMethod.POST)
     public void createFiles(HttpServletRequest request, HttpServletResponse response){
+        int flag = 1;
         String databaseIp = request.getParameter("databaseIp");
-        String databaseName = request.getParameter("databaseName");
+        String mouldIds = request.getParameter("mouldIds");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        String tableNames = request.getParameter("tableNames");
+        String databaseName = request.getParameter("databaseName");
+        try{
+            mouldService.createFiles(databaseIp,tableNames,username,password,mouldIds,databaseName);
+        }catch (Exception e){
+            flag = 0;
+        }
+        try{
+            response.getWriter().print(flag);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
