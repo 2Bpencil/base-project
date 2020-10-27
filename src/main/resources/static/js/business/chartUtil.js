@@ -65,7 +65,7 @@ $(document).ready(function(){
             }
         }]
     }
-    echartsObj = echarts.init(document.getElementById('dataBarChart'));
+    echartsObj = echarts.init(document.getElementById('dataBarChart'),'dark');
     echartsObj.setOption(option);
 });
 //下载图片
@@ -75,7 +75,7 @@ function saveAsImage(){
     oA.download = "Echarts图表" +".png";
     oA.href = echartsObj.getConnectedDataURL({
         type: 'png',
-        pixelRatio: 3,
+        pixelRatio: 2,
     });
     document.body.appendChild(oA);
     oA.click();
